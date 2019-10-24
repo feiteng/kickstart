@@ -1,6 +1,6 @@
 README
 
-#2018
+# 2018
 ## Round A
 ### Even Digits
 
