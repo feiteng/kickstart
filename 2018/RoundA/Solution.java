@@ -4,29 +4,69 @@ import java.io.*;
   
 public class Solution { 
   
+    static BufferedReader in;
+    static String file = "c:/users/rutter/projects/kickstart/in";
 
     public static void main(String[] args) throws Exception
     {
-        Solution sol = new Solution();
-        sol.r_a_EvenDigits();
-    }
-
-    void r_a_EvenDigits() throws Exception
-    {
-        BufferedReader in;
-        int test = 0,   // 0 for std input, 1 for local testing
+        int test = 0,   // 0 for local testing, 1 for std input
             _k = Integer.valueOf("1");
         if(test > 0) in = new BufferedReader(new InputStreamReader(System.in));
         else in = new BufferedReader(new FileReader(file));
         if(test < 0) {String[] str = in.readLine().split(" ");}
+        Solution sol = new Solution();
+        sol.LuckyDip();
+    }
 
-        /**********************************************************/
+    void LuckyDip() throws Exception
+    {
+        /*
+        Task
+        Given a number. Either keep adding 1 or subtracting 1 to get an all even digit number
+        */  
+        int t = Integer.valueOf(in.readLine());
+        for(int i = 1; i <= t; i++)
+        {
+            String[] split = in.readLine().split("\\s+");
+            int n = Integer.valueOf(split[0]),
+                k = Integer.valueOf(split[1]);
+            int[] ary = new int[n];
+            split = in.readLine().split("\\s+");
+            for(int j = 0; j < n; j++) ary[j] = Integer.valueOf(split[j]);
+            System.out.printf("Case #%d: %f\n", i, draw(ary, k));
+        }
+    }
 
+    double draw(int[] ary, int k) 
+    {
+        // k is the replace draws
+        Arrays.sort(ary);
+        int n = ary.length;
+        double expectation = 0., sumd = 0.;
+        while(k-- >= 0) {
+            sumd = 0;
+            int lo = 0, hi = n - 1;
+            while(lo < hi) {
+                int m = (lo + hi) / 2;
+                if(ary[m] < expectation) lo = m + 1;
+                else hi = m;
+            }
+            sumd += expectation * lo;
+            for(int i = lo; i < n; i++) sumd += 1. * ary[i];
+            // for(int i = 0; i < n; i++) {
+            //     sumd += Math.max(1. * ary[i], expectation);
+            // }
+            expectation = sumd / n;
+        }
+        return expectation;
+    }
+
+    void EvenDigits() throws Exception
+    {
 
 		/*
 		Task
 		Given a number. Either keep adding 1 or subtracting 1 to get an all even digit number
-
 		*/  
 		int t = Integer.valueOf(in.readLine());
 		for(int i = 1; i <= t; i++)
@@ -85,5 +125,5 @@ public class Solution {
         return res;
     }
 
-    static String file = "c:/users/lifeiteng/projects/kickstart/in";
+    
 }
